@@ -10,7 +10,7 @@ function App() {
   return (
     <div className='App'>
   
-      <Link className='header' to="/">Country Weather App</Link>  
+      <h1 className='header' >Country Weather App</h1>  
       <div className="appPages">
         <Routes>
         <Route path="/" element={<InputForm/>}/>

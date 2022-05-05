@@ -4,6 +4,7 @@ import { validateInput } from "../utils/helpers";
 import CountryDetails from "./CountryDetails";
 import { AppContext } from "../contexts/AppContext";
 import { COUNTRY_API } from "../utils/constants";
+import './InputForm.css' ;
 
 
 
@@ -41,7 +42,7 @@ const InputForm = () => {
     return (
         <div className="Input-form">
           <form onSubmit={handleSubmit}>
-          <label>
+          <label className="CountryName">
            Country Name:
           <input type="text"value={State} className="input" onChange={handleInputChange} placeholder="Country Name" />
           </label>
