@@ -18,7 +18,7 @@ const InputForm = () => {
     };
 
     return (
-        <div>
+        <div className="Input-form">
           <form onSubmit={handleSubmit}>
           <label>
            Country Name:

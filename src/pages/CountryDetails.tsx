@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import InputForm from "./InputForm";
+import WeatherDetails from "./WeatherDetails";
+import { useNavigate } from "react-router-dom";
+
 const CountryDetails = (props:any)=> {
     const [Data,setData] = useState("");
     useEffect(()=> {
@@ -13,6 +16,7 @@ const CountryDetails = (props:any)=> {
                 setData(actualData);
                 console.log(actualData[0].capital);
                 
+       
             }
             catch(err) 
             {
@@ -23,11 +27,22 @@ const CountryDetails = (props:any)=> {
         getData()
 
     },[])
+
+    const handleWeatherData = (e:any) => {
+        e.preventDefault() ;
+        navigate("/WeatherDetails");
+    }
     return (
-      
-      <div>
-        
+      <>
+      <div className="weather-card">
+        <h1>Capital Population:{Data}</h1>
+        <h1>Latitude:</h1>
+        <h1>Longitude:</h1>
+        <h1>Country Flag</h1>
+        <button onClick={handleWeatherData}>Capital: { Data[0]}</button>
+
       </div>
+      </>
     )
 };
 
