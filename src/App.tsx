@@ -8,7 +8,7 @@ import WeatherDetails from './pages/WeatherDetails';
 
 function App() {
   return (
-    <div>
+    <div className='App'>
   
       <Link className='header' to="/">Country Weather App</Link>  
       <div className="appPages">

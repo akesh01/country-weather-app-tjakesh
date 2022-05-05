@@ -1,48 +1,44 @@
 import React, { useEffect, useState } from "react";
 import InputForm from "./InputForm";
 import WeatherDetails from "./WeatherDetails";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { AppContext } from "../contexts/AppContext";
+import { WEATHER_API } from "../utils/constants";
 
 const CountryDetails = (props:any)=> {
-    const [Data,setData] = useState("");
-    useEffect(()=> {
-        const getData = async ()=> {
-            try {
-                    const response = await fetch('https://restcountries.com/v3.1/name/india');
-                    if(!response.ok) {
-                        throw new Error ('This is an HTTP Error');
-                    }
-                let actualData = await response.json();
-                setData(actualData);
-                console.log(actualData[0].capital);
-                
-       
-            }
-            catch(err) 
-            {
-                console.log("Error");
-                
-            }
-        }
-        getData()
+    const {context}:any = React.useContext(AppContext)
+    const {country}:any = context ;
+    const navigate = useNavigate();
+   const  getWeatherDetails = () => {
+        fetch(`${WEATHER_API}&query=${context.country?.capital?.[0]}`)
+        .then((resp) => {
+          resp.json().then(data => {
+            context.setWeather(data);
+            navigate("/WeatherDetails");
+          })
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      }
 
-    },[])
-
-    const handleWeatherData = (e:any) => {
-        e.preventDefault() ;
-        navigate("/WeatherDetails");
-    }
     return (
-      <>
+  
       <div className="weather-card">
-        <h1>Capital Population:{Data}</h1>
-        <h1>Latitude:</h1>
-        <h1>Longitude:</h1>
-        <h1>Country Flag</h1>
-        <button onClick={handleWeatherData}>Capital: { Data[0]}</button>
+      <h2>Country Details</h2>
+          <h3>{country.name?.common}</h3>
+          <img src={country.flags.png} />
+          <p>Population: {country.population}</p>
+          <p>Latitude: {country.latlng?.[0]}, Longitude: {country.latlng?.[1]}</p>
+          <button
+            onClick={getWeatherDetails}
+            className="button"
+          >
+            Capital Weather
+          </button>
 
       </div>
-      </>
+      
     )
 };
 

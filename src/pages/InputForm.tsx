@@ -1,20 +1,41 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { validateInput } from "../utils/helpers";
 import CountryDetails from "./CountryDetails";
+import { AppContext } from "../contexts/AppContext";
+import { COUNTRY_API } from "../utils/constants";
+
+
 
 const InputForm = () => {
-    const [CountryName,SetCountryName] = useState("");
+    const context = React.useContext(AppContext)
+    const {value}:any = context ;
     const navigate = useNavigate();
-
+    
+    const [State,SetState] = useState("");
     const handleInputChange = (e:any) => {
-        SetCountryName(e.target.value);
-       
-        
+       SetState(e.target.value);
     };
+
+    const isButtonDisabled =()=>{
+        return validateInput(State);
+      }
 
     const handleSubmit = (e:any) => {
         e.preventDefault() ;
-        navigate("/CountryDetails")
+        fetch(`${COUNTRY_API}/${value.country}`)
+        .then((resp) => {
+          resp.json().then(data => {
+            if(Array.isArray(data) && data.length){
+              value.SetCountry(data[0]);
+              navigate("/CountryDetails")
+            }
+          })
+        })
+        .catch(err => {
+          console.log(err);
+        })
+       
     };
 
     return (
@@ -22,9 +43,12 @@ const InputForm = () => {
           <form onSubmit={handleSubmit}>
           <label>
            Country Name:
-          <input type="text" onChange={handleInputChange} name="Country-Name" />
+          <input type="text"value={State} className="input" onChange={handleInputChange} placeholder="Country Name" />
           </label>
-          <button type="submit" >Get Data</button>
+          <button type="submit"  name="Submit"
+              className="button"
+              disabled={!isButtonDisabled()} >
+            Submit</button>
           </form>
         </div>
     )   

@@ -1,38 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState }  from "react";
+import { AppContext } from "../contexts/AppContext";
 
-const API_ENDPOINT = `http://api.weatherstack.com/current`;
-const API_KEY = "548e0f50f87a7c131a56fd10f6df3358" ;
+
 
 const WeatherDetails = ()=> {
-    const [WeatherData,setWeatherData] = useState("");
-  
-  useEffect(() => {
-    async function triggerApi() {
-      try {
-      
-        const response = await axios.get(API_ENDPOINT, {
-          params: {
-            access_key: API_KEY,
-          },
-        });
-        setWeatherData(response.data);
-        console.log(WeatherData);
-        
-      } catch (e: any) {
-        console.log("Error");
-      } 
-    }
-     triggerApi();
-  }, []);
+   const context = React.useContext(AppContext)
+   const {weather}:any = context ;
     return (
-        <div className="Weather-Card">
-            <h1>Temperature:</h1>
-            <h1>Weather Icon:</h1>
-            <h1>Wind Speed:</h1>
-            <h1>Time Zone Id:</h1>
-
-        </div>
+        <div>
+       
+          <h2>Weather Details</h2>
+          <h3>Temperature: {weather.current?.temperature} Celsius</h3>
+          <img src={weather.current.weather_icons?.[0]} />
+          <p>Wind speed: {weather.current?.wind_speed} m/s</p>
+          <p>Time zone id: {weather.location?.timezone_id}</p>
+      </div>
     );
 }
 
